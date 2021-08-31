@@ -50,8 +50,8 @@ public class Respawn : MonoBehaviour
 		
 		if(IgnorandoColision)
 		{
-			Tempo += T.GetDT();
-			if(Tempo > TiempDeNoColision)
+			Tempo += Time.deltaTime;
+			if (Tempo > TiempDeNoColision)
 			{
 				IgnorarColision(false);
 			}
@@ -65,7 +65,7 @@ public class Respawn : MonoBehaviour
 	{
 		GetComponent<Rigidbody>().velocity = Vector3.zero;
 		
-		gameObject.SendMessage("SetGiro", 0f);
+		//gameObject.SendMessage("SetGiro", 0f);
 		
 		if(CPAct.Habilitado())
 		{

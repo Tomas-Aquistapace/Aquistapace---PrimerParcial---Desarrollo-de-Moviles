@@ -29,8 +29,8 @@ public class PantallaCalibTuto : MonoBehaviour
 		{
 		case ContrCalibracion.Estados.Calibrando:
 			//pongase en posicion para iniciar
-			TempoIntCalib += T.GetDT();
-			if(TempoIntCalib >= Intervalo)
+			TempoIntCalib += Time.deltaTime;
+			if (TempoIntCalib >= Intervalo)
 			{
 				TempoIntCalib = 0;
 				if(EnCursoCalib + 1 < ImagenesDeCalib.Length)
@@ -44,8 +44,8 @@ public class PantallaCalibTuto : MonoBehaviour
 			
 		case ContrCalibracion.Estados.Tutorial:
 			//tome la bolsa y depositela en el estante
-			TempoIntTuto += T.GetDT();
-			if(TempoIntTuto >= Intervalo)
+			TempoIntTuto += Time.deltaTime;
+			if (TempoIntTuto >= Intervalo)
 			{
 				TempoIntTuto = 0;
 				if(EnCursoTuto + 1 < ImagenesDelTuto.Length)

@@ -9,7 +9,7 @@ public class ManejoPallets : MonoBehaviour
 	
 	public virtual bool Recibir(Pallet pallet)
 	{
-		Debug.Log(gameObject.name+" / Recibir()");
+		//Debug.Log(gameObject.name+" / Recibir()");
 		Pallets.Add(pallet);
 		pallet.Pasaje();
 		return true;

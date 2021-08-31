@@ -24,8 +24,8 @@ public class Obstaculo : MonoBehaviour
 	{
 		if(Chocado)
 		{
-			Tempo1 += T.GetDT();
-			if(Tempo1 > TiempEmpDesapa)
+			Tempo1 += Time.deltaTime;
+			if (Tempo1 > TiempEmpDesapa)
 			{
 				Chocado = false;
 				Desapareciendo = true;
@@ -38,10 +38,11 @@ public class Obstaculo : MonoBehaviour
 		{
 			//animacion de desaparecer
 			
-			Tempo2 += T.GetDT();
-			if(Tempo2 > TiempDesapareciendo)
+			Tempo2 += Time.deltaTime;
+			if (Tempo2 > TiempDesapareciendo)
 			{
-				gameObject.SetActiveRecursively(false);
+				//gameObject.SetActiveRecursively(false);
+				gameObject.SetActive(false);
 			}
 		}
 	}

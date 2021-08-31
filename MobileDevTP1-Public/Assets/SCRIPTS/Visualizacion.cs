@@ -37,13 +37,6 @@ public class Visualizacion : MonoBehaviour
 	public Vector2[] FondoPos;
 	public Vector2 FondoEsc = Vector2.zero;
 	
-	//public Vector2 SlotsEsc = Vector2.zero;
-	//public Vector2 SlotPrimPos = Vector2.zero;
-	//public Vector2 Separacion = Vector2.zero;
-	
-	//public int Fil = 0;
-	//public int Col = 0;
-	
 	public Texture2D TexturaVacia;//lo que aparece si no hay ninguna bolsa
 	public Texture2D TextFondo;
 	
@@ -87,9 +80,6 @@ public class Visualizacion : MonoBehaviour
 	public Texture2D TextNum1; 
 	public Texture2D TextNum2;
 	public GameObject Techo;
-	
-	
-	
 	
 	Rect R;
 	
@@ -297,8 +287,8 @@ public class Visualizacion : MonoBehaviour
 		case ContrCalibracion.Estados.Tutorial:
 			//tome la bolsa y depositela en el estante
 			
-			TempoIntTuto += T.GetDT();
-			if(TempoIntTuto >= Intervalo)
+			TempoIntTuto += Time.deltaTime;
+			if (TempoIntTuto >= Intervalo)
 			{
 				TempoIntTuto = 0;
 				if(EnCurso + 1 < ImagenesDelTuto.Length)
@@ -465,9 +455,9 @@ public class Visualizacion : MonoBehaviour
 				GS_Inv.box.normal.background = TextInvDer[contador];
 			else
 			{
-				TempParp += T.GetDT();
-				
-				if(TempParp >= Parpadeo)
+				TempParp += Time.deltaTime;
+
+				if (TempParp >= Parpadeo)
 				{
 					TempParp = 0;
 					if(PrimIma)
@@ -493,9 +483,9 @@ public class Visualizacion : MonoBehaviour
 				GS_Inv.box.normal.background = TextInvIzq[contador];
 			else
 			{
-				TempParp += T.GetDT();
-				
-				if(TempParp >= Parpadeo)
+				TempParp += Time.deltaTime;
+
+				if (TempParp >= Parpadeo)
 				{
 					TempParp = 0;
 					if(PrimIma)

@@ -8,7 +8,7 @@ public class ContrTutorial : MonoBehaviour
 	public float Tempo = 0;
 	
 	public bool Finalizado = false;
-	bool Iniciado = false;
+	//bool Iniciado = false;
 	
 	GameManager GM;
 	
@@ -51,7 +51,7 @@ public class ContrTutorial : MonoBehaviour
 	public void Iniciar()
 	{
 		Pj.GetComponent<Frenado>().RestaurarVel();
-		Iniciado = true;
+		//Iniciado = true;
 	}
 	
 	public void Finalizar()

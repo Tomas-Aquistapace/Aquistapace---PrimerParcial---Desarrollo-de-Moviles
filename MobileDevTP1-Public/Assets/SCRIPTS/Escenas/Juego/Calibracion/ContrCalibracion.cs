@@ -57,8 +57,8 @@ public class ContrCalibracion : MonoBehaviour
 		{
 			if(Tempo2 < TiempEspCalib)
 			{
-				Tempo2 += T.GetDT();
-				if(Tempo2 > TiempEspCalib)
+				Tempo2 += Time.deltaTime;
+				if (Tempo2 > TiempEspCalib)
 				{
 					 SetActivComp(true);
 				}

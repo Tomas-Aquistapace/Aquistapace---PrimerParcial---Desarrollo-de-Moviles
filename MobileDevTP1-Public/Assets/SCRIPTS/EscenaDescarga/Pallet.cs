@@ -32,26 +32,26 @@ public class Pallet : MonoBehaviour
 		{
 			if(EnSmoot)
 			{
-				TempoSmoot += T.GetDT();
-				if(TempoSmoot >= TiempSmoot)
+				TempoSmoot += Time.deltaTime;
+				if (TempoSmoot >= TiempSmoot)
 				{
 					EnSmoot = false;
 					TempoSmoot = 0;
 				}
 				else
 				{
-					print("smoot");
+					//print("smoot");
 					
 					if(Portador.GetComponent<ManoRecept>() != null)
 						transform.position = Portador.transform.position - Vector3.up * 1.2f;
 					else
-						transform.position = Vector3.Lerp(transform.position, Portador.transform.position, T.GetDT() * 10);
+						transform.position = Vector3.Lerp(transform.position, Portador.transform.position, Time.deltaTime * 10);
 				}
 				
 			}
 			else
 			{
-				print("crudo");
+				//print("crudo");
 				
 				if(Portador.GetComponent<ManoRecept>() != null)
 					transform.position = Portador.transform.position - Vector3.up * 1.2f;

@@ -19,8 +19,8 @@ public class CheakPoint : MonoBehaviour
 	{
 		if(!HabilitadoResp)
 		{
-			Tempo += T.GetDT();
-			if(Tempo >= TiempPermanencia)
+			Tempo += Time.deltaTime;
+			if (Tempo >= TiempPermanencia)
 			{
 				Tempo = 0;
 				HabilitadoResp = true;

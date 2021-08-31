@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
@@ -19,12 +20,8 @@ public class GameManager : MonoBehaviour
 	public Player Player2;
 	
 	//mueve los esqueletos para usar siempre los mismos
-	public Transform Esqueleto1;
-	public Transform Esqueleto2;
-	//public Vector3[] PosEsqsCalib;
 	public Vector3[] PosEsqsCarrera;
-	
-	bool PosSeteada = false;
+
 	
 	bool ConteoRedresivo = true;
 	public Rect ConteoPosEsc;
@@ -90,7 +87,8 @@ public class GameManager : MonoBehaviour
 		if(Input.GetKey(KeyCode.Mouse1) &&
 		   Input.GetKey(KeyCode.Keypad0))
 		{
-			Application.LoadLevel(Application.loadedLevel);
+			//Application.LoadLevel(Application.loadedLevel);
+			SceneManager.LoadScene(0);
 		}
 		
 		//CIERRA LA APLICACION
@@ -168,8 +166,8 @@ public class GameManager : MonoBehaviour
 				//Player1.rigidbody.velocity = Vector3.zero;
 				//Player2.rigidbody.velocity = Vector3.zero;
 				
-				ConteoParaInicion -= T.GetDT();
-				if(ConteoParaInicion < 0)
+				ConteoParaInicion -= Time.deltaTime;
+					if (ConteoParaInicion < 0)
 				{
 					EmpezarCarrera();
 					ConteoRedresivo = false;
@@ -178,8 +176,8 @@ public class GameManager : MonoBehaviour
 			else
 			{
 				//baja el tiempo del juego
-				TiempoDeJuego -= T.GetDT();
-				if(TiempoDeJuego <= 0)
+				TiempoDeJuego -= Time.deltaTime;
+					if (TiempoDeJuego <= 0)
 				{
 					//termina el juego
 				}
@@ -204,9 +202,10 @@ public class GameManager : MonoBehaviour
 			
 			TiempEspMuestraPts -= Time.deltaTime;
 			if(TiempEspMuestraPts <= 0)
-				Application.LoadLevel(Application.loadedLevel +1);				
-			
-			break;		
+				//Application.LoadLevel(Application.loadedLevel +1); 
+				SceneManager.LoadScene(1);
+
+				break;		
 		}
 	}
 	
@@ -252,19 +251,13 @@ public class GameManager : MonoBehaviour
 	{
 		for(int i = 0; i < ObjsCalibracion1.Length; i++)
 		{
-			ObjsCalibracion1[i].SetActiveRecursively(true);
-			ObjsCalibracion2[i].SetActiveRecursively(true);
-		}
-		
-		for(int i = 0; i < ObjsTuto2.Length; i++)
-		{
-			ObjsTuto2[i].SetActiveRecursively(false);
-			ObjsTuto1[i].SetActiveRecursively(false);
+			ObjsCalibracion1[i].SetActive(true);
+			ObjsCalibracion2[i].SetActive(true);
 		}
 		
 		for(int i = 0; i < ObjsCarrera.Length; i++)
 		{
-			ObjsCarrera[i].SetActiveRecursively(false);
+			ObjsCarrera[i].SetActive(false);
 		}
 		
 		
@@ -291,12 +284,12 @@ public class GameManager : MonoBehaviour
 			
 		for(int i = 0; i < ObjsTuto1.Length; i++)
 		{
-			ObjsTuto1[i].SetActiveRecursively(true);
+			ObjsTuto1[i].SetActive(true);
 		}
 		
 		for(int i = 0; i < ObjsCalibracion1.Length; i++)
 		{
-			ObjsCalibracion1[i].SetActiveRecursively(false);
+			ObjsCalibracion1[i].SetActive(false);
 		}
 		Player1.GetComponent<Frenado>().Frenar();
 		Player1.CambiarATutorial();
@@ -308,12 +301,12 @@ public class GameManager : MonoBehaviour
 			
 		for(int i = 0; i < ObjsCalibracion2.Length; i++)
 		{
-			ObjsCalibracion2[i].SetActiveRecursively(false);
+			ObjsCalibracion2[i].SetActive(false);
 		}
 		
 		for(int i = 0; i < ObjsTuto2.Length; i++)
 		{
-			ObjsTuto2[i].SetActiveRecursively(true);
+			ObjsTuto2[i].SetActive(true);
 		}
 		Player2.GetComponent<Frenado>().Frenar();
 		Player2.gameObject.transform.position = PosCamion2Tuto;
@@ -390,7 +383,6 @@ public class GameManager : MonoBehaviour
 		pjInf.PJ.GetComponent<Visualizacion>().SetLado(pjInf.LadoAct);
 		//en este momento, solo la primera vez, deberia setear la otra camara asi no se superponen
 		pjInf.PJ.ContrCalib.IniciarTesteo();
-		PosSeteada = true;
 		
 		
 		if(pjInf.PJ == Player1)
@@ -414,12 +406,12 @@ public class GameManager : MonoBehaviour
 	{
 		//Debug.Log("CambiarACarrera()");
 		
-		Esqueleto1.transform.position = PosEsqsCarrera[0];
-		Esqueleto2.transform.position = PosEsqsCarrera[1];
+		//Esqueleto1.transform.position = PosEsqsCarrera[0];
+		//Esqueleto2.transform.position = PosEsqsCarrera[1];
 		
 		for(int i = 0; i < ObjsCarrera.Length; i++)
 		{
-			ObjsCarrera[i].SetActiveRecursively(true);
+			ObjsCarrera[i].SetActive(true);
 		}
 		
 		/*
@@ -433,30 +425,18 @@ public class GameManager : MonoBehaviour
 		
 		//desactivacion de la calibracion
 		PlayerInfo1.FinCalibrado = true;
-			
-		for(int i = 0; i < ObjsTuto1.Length; i++)
-		{
-			ObjsTuto1[i].SetActiveRecursively(true);
-		}
 		
 		for(int i = 0; i < ObjsCalibracion1.Length; i++)
 		{
-			ObjsCalibracion1[i].SetActiveRecursively(false);
+			ObjsCalibracion1[i].SetActive(false);
 		}
 		
 		PlayerInfo2.FinCalibrado = true;
 			
 		for(int i = 0; i < ObjsCalibracion2.Length; i++)
 		{
-			ObjsCalibracion2[i].SetActiveRecursively(false);
+			ObjsCalibracion2[i].SetActive(false);
 		}
-		
-		for(int i = 0; i < ObjsTuto2.Length; i++)
-		{
-			ObjsTuto2[i].SetActiveRecursively(true);
-		}
-		
-		
 		
 		
 		//posiciona los camiones dependiendo de que lado de la pantalla esten

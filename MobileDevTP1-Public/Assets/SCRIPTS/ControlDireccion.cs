@@ -34,9 +34,9 @@ public class ControlDireccion : MonoBehaviour
 		switch(InputAct)
 		{
 		case TipoInput.Mouse:
-			if(Habilitado) 
-				gameObject.SendMessage("SetGiro", MousePos.Relation(MousePos.AxisRelation.Horizontal));//debe ser reemplanado
-			break;
+			//if(Habilitado) 
+			//	gameObject.SendMessage("SetGiro", MousePos.Relation(MousePos.AxisRelation.Horizontal));//debe ser reemplanado
+			//break;
 			
 		case TipoInput.Kinect:
 			
