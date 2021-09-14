@@ -64,15 +64,13 @@ public class ControladorDeDescarga : MonoBehaviour
 			if(TempoBonus > 0)
 			{
 				Bonus = (TempoBonus * (float)PEnMov.Valor) / PEnMov.Tiempo;
-				TempoBonus -= Time.deltaTime;//T.GetDT();
+				TempoBonus -= Time.deltaTime;
 			}
 			else
 			{
 				Bonus = 0;
 			}		
 		}
-		
-		
 	}
 	
 	//--------------------------------------------------------------//

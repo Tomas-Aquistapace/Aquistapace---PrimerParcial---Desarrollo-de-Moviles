@@ -35,13 +35,11 @@ public class MngPts : MonoBehaviour
 	
 	//---------------------------------//
 	
-	// Use this for initialization
 	void Start () 
 	{		
 		SetGanador();
 	}
 	
-	// Update is called once per frame
 	void Update () 
 	{
 		//PARA JUGAR
@@ -65,19 +63,11 @@ public class MngPts : MonoBehaviour
 			Application.Quit();
 		}
 		
-		////CALIBRACION DEL KINECT
-		//if(Input.GetKeyDown(KeyCode.Backspace))
-		//{
-		//	Application.LoadLevel(3);
-		//}		
-		
-		
 		TiempEspReiniciar -= Time.deltaTime;
 		if(TiempEspReiniciar <= 0 )
 		{
 			SceneManager.LoadScene(0);
-		}
-		
+		}		
 		
 		if(ActivadoAnims)
 		{
@@ -95,9 +85,7 @@ public class MngPts : MonoBehaviour
 					PrimerImaParp = true;
 				}
 			}
-		}
-		
-		
+		}	
 		
 		if(!ActivadoAnims)
 		{
@@ -112,15 +100,6 @@ public class MngPts : MonoBehaviour
 		
 	}
 	
-	/*
-	void OnGUI()
-	{
-		SetGUIGanador();
-		SetGUIPerdedor();
-		GUI.skin = null;
-	}
-	*/
-	
 	void OnGUI()
 	{
 		if(ActivadoAnims)
@@ -133,41 +112,6 @@ public class MngPts : MonoBehaviour
 	}
 	
 	//---------------------------------//
-	
-	/*
-	void SetGUIGanador()
-	{
-		GUI.skin = GS_Vict;
-		
-		R.width = ScoreEsc.x * Screen.width /100;
-		R.height = ScoreEsc.y * Screen.height /100;
-		
-		R.x = ScorePos.x * Screen.width / 100;
-		R.y = ScorePos.y * Screen.height / 100;
-		
-		if(DatosPartida.LadoGanadaor == DatosPartida.Lados.Der)
-			R.x = (Screen.width) - R.x - R.width;
-		
-		GUI.Box(R, "GANADOR" + '\n' + "DINERO: " + DatosPartida.PtsGanador);
-		
-	}
-	
-	void SetGUIPerdedor()
-	{
-		GUI.skin = GS_Derr;
-		
-		R.width = ScoreEsc.x * Screen.width /100;
-		R.height = ScoreEsc.y * Screen.height /100;
-		
-		R.x = ScorePos.x * Screen.width / 100;
-		R.y = ScorePos.y * Screen.height / 100;
-		
-		if(DatosPartida.LadoGanadaor == DatosPartida.Lados.Izq)
-			R.x = (Screen.width) - R.x - R.width;
-		
-		GUI.Box(R, "PERDEDOR" + '\n' + "DINERO: " + DatosPartida.PtsPerdedor);
-	}
-	*/
 	
 	void SetGanador()
 	{

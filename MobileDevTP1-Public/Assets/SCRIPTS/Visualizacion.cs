@@ -1,5 +1,8 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
 /// clase encargada de TODA la visualizacion
@@ -11,134 +14,83 @@ public class Visualizacion : MonoBehaviour
 	public enum Lado{Izq, Der}
 	public Lado LadoAct;
 	
-	ControlDireccion Direccion;
+	//ControlDireccion Direccion;
 	Player Pj;
-	
+	//[SerializeField] GameObject playerCanvas;
+
 	//las distintas camaras
+	[Header("Camaras")]
 	public Camera CamCalibracion;
 	public Camera CamConduccion;
 	public Camera CamDescarga;
 	
-	
+	[Header("Canvas Jugador")]
+	public GameObject playerHUD;
+
 	//EL DINERO QUE SE TIENE
-	public Vector2[]DinPos;
-	public Vector2 DinEsc = Vector2.zero;
-	
-	public GUISkin GS_Din;
-	
-	//EL VOLANTE
-	public Vector2[] VolantePos;
-	public float VolanteEsc = 0;
-	
-	public GUISkin GS_Volante;
-	
-	
+	[Header("Dinero")]
+	[SerializeField] TextMeshProUGUI dineroUI;
+
 	//PARA EL INVENTARIO
-	public Vector2[] FondoPos;
-	public Vector2 FondoEsc = Vector2.zero;
-	
-	public Texture2D TexturaVacia;//lo que aparece si no hay ninguna bolsa
-	public Texture2D TextFondo;
-	
+	[Header("Inventario")]	
 	public float Parpadeo = 0.8f;
-	public float TempParp = 0;
-	public bool PrimIma = true;
-	
-	public Texture2D[] TextInvIzq;
-	public Texture2D[] TextInvDer;
-	
-	public GUISkin GS_Inv;
-	
+	float TempParp = 0f;
+	bool PrimIma = true;
+
+	public GameObject inventory;
+	public List<Sprite> inventoryState = new List<Sprite>();
+
 	//BONO DE DESCARGA
-	public Vector2 BonusPos = Vector2.zero;
-	public Vector2 BonusEsc = Vector2.zero;
-	
-	public Color32 ColorFondoBolsa;	
-	public Vector2 ColorFondoPos = Vector2.zero;
-	public Vector2 ColorFondoEsc = Vector2.zero;
-	
-	public Vector2 ColorFondoFondoPos = Vector2.zero;
-	public Vector2 ColorFondoFondoEsc = Vector2.zero;
-	
-	public GUISkin GS_FondoBonusColor;
-	public GUISkin GS_FondoFondoBonusColor;
-	public GUISkin GS_Bonus;
-	
-	
-	//CALIBRACION MAS TUTO BASICO
-	public Vector2 ReadyPos = Vector2.zero;
-	public Vector2 ReadyEsc = Vector2.zero;
-	public Texture2D[] ImagenesDelTuto;
-	public float Intervalo = 0.8f;//tiempo de cada cuanto cambia de imagen
-	float TempoIntTuto = 0;
-	int EnCurso = -1;
-	public Texture2D ImaEnPosicion;
-	public Texture2D ImaReady;
-	public GUISkin GS_TutoCalib;	
-	
+	[Header("Bono de Descarga")]
+	[SerializeField] GameObject descargaPanel;
+	[SerializeField] RectTransform greenFillingBonus;
+	[SerializeField] TextMeshProUGUI moneyStored;
+	[SerializeField] float smoothTime = 0.015f;
+	float greenTime = 1f;
+
 	//NUMERO DEL JUGADOR
+	[Header("Num Juagador")]
 	public Texture2D TextNum1; 
 	public Texture2D TextNum2;
 	public GameObject Techo;
 	
-	Rect R;
+	//Rect R;
 	
 	//------------------------------------------------------------------//
 	
-	// Use this for initialization
-	void Start () 
+	void Start()
 	{
-		TempoIntTuto = Intervalo;
-		Direccion = GetComponent<ControlDireccion>();
+		//Direccion = GetComponent<ControlDireccion>();
 		Pj = GetComponent<Player>();
-	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
-		
-	}
-	
-	void OnGUI()
-	{	
-		switch(Pj.EstAct)
-		{
-			
-			
-		case Player.Estados.EnConduccion:
-			//inventario
-			SetInv3();
-			//contador de dinero
-			SetDinero();
-			//el volante
-			SetVolante();
-			break;
-			
-			
-			
-		case Player.Estados.EnDescarga:
-			//inventario
-			SetInv3();
-			//el bonus
-			SetBonus();
-			//contador de dinero
-			SetDinero();			
-			break;
-			
-			
-		case Player.Estados.EnCalibracion:
-			//SetCalibr();
-			break;
-			
-			
-		case Player.Estados.EnTutorial:
-			SetInv3();
-			SetTuto();
-			SetVolante();
-			break;
+
+        if (this.gameObject.activeSelf)
+        {
+			playerHUD.SetActive(true);
+
+			descargaPanel.SetActive(false);
 		}
+	}
+	
+	void Update() 
+	{
+		switch (Pj.EstAct)
+		{
+			case Player.Estados.EnConduccion:
+				//inventario
+				SetInv();
+				//contador de dinero
+				SetDinero();
+				break;
 		
-		GUI.skin = null;
+			case Player.Estados.EnDescarga:
+				//inventario
+				SetInv();
+				//el bonus
+				SetBonus();
+				//contador de dinero
+				SetDinero();
+				break;
+		}
 	}
 	
 	//--------------------------------------------------------//
@@ -148,6 +100,8 @@ public class Visualizacion : MonoBehaviour
 		CamCalibracion.enabled = true;
 		CamConduccion.enabled = false;
 		CamDescarga.enabled = false;
+
+		playerHUD.SetActive(false);
 	}
 	
 	public void CambiarATutorial()
@@ -162,6 +116,9 @@ public class Visualizacion : MonoBehaviour
 		CamCalibracion.enabled = false;
 		CamConduccion.enabled = true;
 		CamDescarga.enabled = false;
+
+		playerHUD.SetActive(true);
+		descargaPanel.SetActive(false);
 	}
 	
 	public void CambiarADescarga()
@@ -169,6 +126,9 @@ public class Visualizacion : MonoBehaviour
 		CamCalibracion.enabled = false;
 		CamConduccion.enabled = false;
 		CamDescarga.enabled = true;
+
+		playerHUD.SetActive(true);
+		descargaPanel.SetActive(true);
 	}
 	
 	//---------//
@@ -212,303 +172,71 @@ public class Visualizacion : MonoBehaviour
 	{
 		if(Pj.ContrDesc.PEnMov != null)
 		{
-			//el fondo
-			GUI.skin = GS_FondoFondoBonusColor;
-			
-			R.width = ColorFondoFondoEsc.x *Screen.width /100;
-			R.height = ColorFondoFondoEsc.y *Screen.height /100;
-			R.x = ColorFondoFondoPos.x *Screen.width /100;
-			R.y = ColorFondoFondoPos.y *Screen.height /100;
-			if(LadoAct == Visualizacion.Lado.Der)
-				R.x += (Screen.width)/2;			
-			GUI.Box(R, "");
-			
-			
-			//el fondo
-			GUI.skin = GS_FondoBonusColor;
-			
-			R.width = ColorFondoEsc.x *Screen.width /100;
-			R.height = (ColorFondoEsc.y *Screen.height /100) * (Pj.ContrDesc.Bonus / (int)Pallet.Valores.Valor2);
-			R.x = ColorFondoPos.x *Screen.width /100;
-			R.y = (ColorFondoPos.y *Screen.height /100) - R.height;
-			if(LadoAct == Visualizacion.Lado.Der)
-				R.x += (Screen.width)/2;			
-			GUI.Box(R, "");
-			
-			
-			//la bolsa
-			GUI.skin = GS_Bonus;
-		
-			R.width = BonusEsc.x *Screen.width /100;
-			R.height = R.width /2;
-			R.x = BonusPos.x *Screen.width /100;
-			R.y = BonusPos.y *Screen.height /100;
-			if(LadoAct == Visualizacion.Lado.Der)
-				R.x += (Screen.width)/2;
-			GUI.Box(R, "     $" + Pj.ContrDesc.Bonus.ToString("0"));
+			greenFillingBonus.localScale = new Vector3(1, greenTime, 1);
+
+			if(greenTime > 0)
+				greenTime -= smoothTime * Time.deltaTime;
+
+			moneyStored.text = Pj.ContrDesc.Bonus.ToString("0");
 		}
+        else
+        {
+			greenTime = 1f;
+        }
 	}
 	
 	void SetDinero()
 	{
-		GUI.skin = GS_Din;
-		
-		R.width = DinEsc.x *Screen.width /100;
-		R.height = DinEsc.y *Screen.height /100;
-		R.x = DinPos[0].x *Screen.width /100;
-		R.y = DinPos[0].y *Screen.height /100;
-		if(LadoAct == Visualizacion.Lado.Der)
-			R.x = DinPos[1].x *Screen.width /100;
-			//R.x = (Screen.width) - (Screen.width/2) - R.x;
-		GUI.Box(R, "$" + PrepararNumeros(Pj.Dinero));
+		dineroUI.text = Pj.Dinero.ToString();
 	}
 	
-	void SetCalibr()
-	{
-		GUI.skin = GS_TutoCalib;
-		
-		R.width = ReadyEsc.x *Screen.width /100;
-		R.height = ReadyEsc.y *Screen.height /100;
-		R.x = ReadyPos.x *Screen.width /100;
-		R.y = ReadyPos.y *Screen.height /100;
-		if(LadoAct == Visualizacion.Lado.Der)
-			R.x = (Screen.width) - R.x - R.width;
-		
-		switch(Pj.ContrCalib.EstAct)
-		{
-		case ContrCalibracion.Estados.Calibrando:
-			
-			//pongase en posicion para iniciar
-			GS_TutoCalib.box.normal.background = ImaEnPosicion;			
-			GUI.Box(R,"");
-			
-			break;
-			
-		case ContrCalibracion.Estados.Tutorial:
-			//tome la bolsa y depositela en el estante
-			
-			TempoIntTuto += Time.deltaTime;
-			if (TempoIntTuto >= Intervalo)
-			{
-				TempoIntTuto = 0;
-				if(EnCurso + 1 < ImagenesDelTuto.Length)
-					EnCurso++;
-				else
-					EnCurso = 0;
-			}
-			GS_TutoCalib.box.normal.background = ImagenesDelTuto[EnCurso];
-			
-			GUI.Box(R,"");
-			
-			break;
-			
-		case ContrCalibracion.Estados.Finalizado:
-			//esperando al otro jugador		
-			GS_TutoCalib.box.normal.background = ImaReady;
-			GUI.Box(R,"");
-			
-			break;
-		}
-	}
-	
-	void SetTuto()
-	{
-		if(Pj.ContrTuto.Finalizado)
-		{
-			GUI.skin = GS_TutoCalib;
-			
-			R.width = ReadyEsc.x *Screen.width /100;
-			R.height = ReadyEsc.y *Screen.height /100;
-			R.x = ReadyPos.x *Screen.width /100;
-			R.y = ReadyPos.y *Screen.height /100;
-			if(LadoAct == Visualizacion.Lado.Der)
-				R.x = (Screen.width) - R.x - R.width;
-			
-			GUI.Box(R,"ESPERANDO AL OTRO JUGADOR");
-		}
-	}
-	
-	/*
 	void SetInv()
-	{
-		GUI.skin = GS_Inv;
-		
-		//fondo
-		GS_Inv.box.normal.background = TextFondo;
-		R.width = FondoEsc.x * Screen.width /100;
-		R.height = FondoEsc.y * Screen.height /100;
-		R.x = FondoPos.x * Screen.width /100;
-		R.y = FondoPos.y * Screen.height /100;
-		if(LadoAct == Visualizacion.Lado.Der)
-			R.x = (Screen.width) - R.x - R.width;
-		GUI.Box(R,"");
-		
-		//bolsas
-		R.width = SlotsEsc.x * Screen.width /100;
-		R.height = SlotsEsc.y * Screen.height /100;
+    {
 		int contador = 0;
-		for(int j = 0; j < Fil; j++)
+		for (int i = 0; i < 3; i++)     // Pregunta Cuantas bolsas tiene ============= \\
 		{
-			for(int i = 0; i < Col; i++)
-			{
-				R.x = SlotPrimPos.x * Screen.width / 100 + Separacion.x * i * Screen.width / 100;
-				R.y = SlotPrimPos.y * Screen.height / 100 + Separacion.y * j * Screen.height / 100;
-				if(LadoAct == Visualizacion.Lado.Der)
-					R.x = (Screen.width) - R.x - R.width;
-				
-				if(contador < Pj.Bolasas.Length )//&& Pj.Bolasas[contador] != null)
-				{
-					if(Pj.Bolasas[contador]!=null)
-						GS_Inv.box.normal.background = Pj.Bolasas[contador].ImagenInventario;
-					else
-						GS_Inv.box.normal.background = TexturaVacia;				
-				}
-				else
-				{
-					GS_Inv.box.normal.background = TexturaVacia;
-				}
-				GUI.Box(R,"");
-				
-				contador++;
-			}
-		}
-	}
-	*/
-	
-	void SetVolante()
-	{
-		GUI.skin = GS_Volante;
-		
-		R.width = VolanteEsc * Screen.width /100;
-		R.height = VolanteEsc * Screen.width /100;
-		R.x = VolantePos[0].x *Screen.width /100;
-		R.y = VolantePos[0].y *Screen.height /100;
-		
-		if(LadoAct == Visualizacion.Lado.Der)
-			R.x = VolantePos[1].x *Screen.width /100;
-			//R.x = (Screen.width) - ((Screen.width/2) - R.x);
-		
-		Vector2 centro;
-		centro.x = R.x + R.width/2;
-		centro.y = R.y + R.height/2;
-		float angulo = 100 * Direccion.GetGiro();
-		
-		GUIUtility.RotateAroundPivot(angulo, centro);
-				
-		GUI.Box(R,"");
-		
-		GUIUtility.RotateAroundPivot(angulo*(-1), centro);
-	}
-	
-	void SetInv2()
-	{
-		GUI.skin = GS_Inv;
-		
-		R.width = FondoEsc.x * Screen.width /100;
-		R.height = FondoEsc.y * Screen.width /100;
-		R.x = FondoPos[0].x * Screen.width /100;
-		R.y = FondoPos[0].y * Screen.height /100;
-		
-		int contador = 0;
-		for(int i = 0; i < 3; i++)
-		{
-			if(Pj.Bolasas[i]!=null)
+			if (Pj.Bolasas[i] != null)
 				contador++;
 		}
-		
-		if(LadoAct == Visualizacion.Lado.Der)
-		{
-			//R.x = (Screen.width) - R.x - R.width;
-			R.x = FondoPos[1].x * Screen.width /100;
-			GS_Inv.box.normal.background = TextInvDer[contador];
-		}
-		else
-		{
-			GS_Inv.box.normal.background = TextInvIzq[contador];
-		}
-		
-		GUI.Box(R,"");
-	}
-	
-	void SetInv3()
-	{
-		GUI.skin = GS_Inv;
-		
-		R.width = FondoEsc.x * Screen.width /100;
-		R.height = FondoEsc.y * Screen.width /100;
-		R.x = FondoPos[0].x * Screen.width /100;
-		R.y = FondoPos[0].y * Screen.height /100;
-		
-		int contador = 0;
-		for(int i = 0; i < 3; i++)
-		{
-			if(Pj.Bolasas[i]!=null)
-				contador++;
-		}
-		
-		if(LadoAct == Visualizacion.Lado.Der)
-		{
-			//R.x = (Screen.width) - (Screen.width/2) - R.x;
-			R.x = FondoPos[1].x * Screen.width /100;
+
+        switch (contador)
+        {
+			case 0:
+				inventory.GetComponent<Image>().sprite = inventoryState[0];
+				break;
 			
-			if(contador < 3)
-				GS_Inv.box.normal.background = TextInvDer[contador];
-			else
-			{
-				TempParp += Time.deltaTime;
+			case 1:
+				inventory.GetComponent<Image>().sprite = inventoryState[1];
+				break;
+			
+			case 2:
+				inventory.GetComponent<Image>().sprite = inventoryState[2];
+				break;
 
-				if (TempParp >= Parpadeo)
-				{
-					TempParp = 0;
-					if(PrimIma)
-						PrimIma = false;
-					else
-						PrimIma = true;
-				}
-				
-				if(PrimIma)
-				{
-					GS_Inv.box.normal.background = TextInvDer[3];
-				}
-				else
-				{
-					GS_Inv.box.normal.background = TextInvDer[4];
-				}
-				
-			}
-		}
-		else
-		{
-			if(contador < 3)
-				GS_Inv.box.normal.background = TextInvIzq[contador];
-			else
-			{
-				TempParp += Time.deltaTime;
+			case 3:
+				if(TempParp <= Parpadeo)
+                {
+					TempParp += Time.deltaTime;
+                }
+                else
+                {
+					TempParp = 0f;
+					PrimIma = !PrimIma;
+                }
 
-				if (TempParp >= Parpadeo)
-				{
-					TempParp = 0;
-					if(PrimIma)
-						PrimIma = false;
-					else
-						PrimIma = true;
-				}
-				
-				if(PrimIma)
-				{
-					GS_Inv.box.normal.background = TextInvIzq[3];
-				}
-				else
-				{
-					GS_Inv.box.normal.background = TextInvIzq[4];
-				}
-			}
-		}
-		
-		GUI.Box(R,"");
+                if (PrimIma)
+                {
+					inventory.GetComponent<Image>().sprite = inventoryState[3];
+                }
+                else
+                {
+					inventory.GetComponent<Image>().sprite = inventoryState[4];
+                }
+				break;
+        }
 	}
 	
-	public string PrepararNumeros(int dinero)
+	public string PrepararNumeros(int dinero) // Se Usa para la escena final
 	{
 		string strDinero = dinero.ToString();
 		string res = "";
@@ -541,8 +269,5 @@ public class Visualizacion : MonoBehaviour
 		}
 		
 		return res;
-	}
-	
-	
-	
+	}	
 }

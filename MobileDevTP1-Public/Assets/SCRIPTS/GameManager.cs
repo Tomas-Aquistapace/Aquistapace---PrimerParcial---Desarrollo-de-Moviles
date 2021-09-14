@@ -71,8 +71,13 @@ public class GameManager : MonoBehaviour
 	{
 		GameManager.Instancia = this;
 	}
-	
-	void Start()
+
+    private void OnDestroy()
+    {
+		GameManager.Instancia = null;
+    }
+
+    void Start()
 	{
 		IniciarCalibracion();
 		

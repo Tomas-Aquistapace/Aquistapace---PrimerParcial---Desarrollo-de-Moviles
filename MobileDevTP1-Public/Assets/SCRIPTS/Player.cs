@@ -33,12 +33,6 @@ public class Player : MonoBehaviour
 		MiVisualizacion = GetComponent<Visualizacion>();
 	}
 	
-	// Update is called once per frame
-	void Update () 
-	{
-	
-	}
-	
 	//------------------------------------------------------------------//
 	
 	public bool AgregarBolsa(Bolsa b)
@@ -91,6 +85,8 @@ public class Player : MonoBehaviour
 	{
 		MiVisualizacion.CambiarACalibracion();
 		EstAct = Player.Estados.EnCalibracion;
+
+		Debug.LogWarning("Calibracion");
 	}
 	
 	public void CambiarATutorial()
@@ -98,6 +94,8 @@ public class Player : MonoBehaviour
 		MiVisualizacion.CambiarATutorial();
 		EstAct = Player.Estados.EnTutorial;
 		ContrTuto.Iniciar();
+
+		Debug.LogWarning("Tutorial");
 	}
 	
 	public void CambiarAConduccion()
@@ -123,6 +121,4 @@ public class Player : MonoBehaviour
 			}				
 		}
 	}
-	
-	
 }
