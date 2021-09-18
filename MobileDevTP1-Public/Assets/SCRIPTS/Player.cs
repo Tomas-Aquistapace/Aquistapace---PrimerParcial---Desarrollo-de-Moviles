@@ -24,8 +24,7 @@ public class Player : MonoBehaviour
 	
 	//------------------------------------------------------------------//
 
-	// Use this for initialization
-	void Start () 
+	void Start() 
 	{
 		for(int i = 0; i< Bolasas.Length;i++)
 			Bolasas[i] = null;
@@ -85,8 +84,6 @@ public class Player : MonoBehaviour
 	{
 		MiVisualizacion.CambiarACalibracion();
 		EstAct = Player.Estados.EnCalibracion;
-
-		Debug.LogWarning("Calibracion");
 	}
 	
 	public void CambiarATutorial()
@@ -94,8 +91,6 @@ public class Player : MonoBehaviour
 		MiVisualizacion.CambiarATutorial();
 		EstAct = Player.Estados.EnTutorial;
 		ContrTuto.Iniciar();
-
-		Debug.LogWarning("Tutorial");
 	}
 	
 	public void CambiarAConduccion()

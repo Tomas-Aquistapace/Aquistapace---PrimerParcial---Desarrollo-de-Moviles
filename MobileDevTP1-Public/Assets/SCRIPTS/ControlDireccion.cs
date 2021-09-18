@@ -88,6 +88,7 @@ public class ControlDireccion : MonoBehaviour
 				break;
 			}
 			break;
+
             case TipoInput.AWSD:
                 if (Habilitado) {
                     if (Input.GetKey(KeyCode.A)) {

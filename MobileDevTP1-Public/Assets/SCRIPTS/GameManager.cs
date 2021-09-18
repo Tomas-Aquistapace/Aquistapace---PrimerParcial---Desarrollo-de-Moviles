@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System.Collections;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +15,7 @@ public class GameManager : MonoBehaviour
 	public enum EstadoJuego{Calibrando, Jugando, Finalizado}
 	public EstadoJuego EstAct = EstadoJuego.Calibrando;
 	
+	[Header("Jugadores")]
 	public PlayerInfo PlayerInfo1 = null;
 	public PlayerInfo PlayerInfo2 = null;
 	
@@ -22,18 +25,20 @@ public class GameManager : MonoBehaviour
 	//mueve los esqueletos para usar siempre los mismos
 	public Vector3[] PosEsqsCarrera;
 
-	
+	[Header("Contador Inicio")]
+	public TextMeshProUGUI conteoPj1Text;
+	public TextMeshProUGUI conteoPj2Text;
+	public float ConteoParaInicio = 3;
+
 	bool ConteoRedresivo = true;
-	public Rect ConteoPosEsc;
-	public float ConteoParaInicion = 3;
-	public GUISkin GS_ConteoInicio;
+
+	//[Header("Tiempo De Juego")]
+	//public Rect TiempoGUI = new Rect();
+	////public GUISkin GS_TiempoGUI;
+	//Rect R = new Rect();	
+	float TiempEspMuestraPts = 3;
 	
-	public Rect TiempoGUI = new Rect();
-	public GUISkin GS_TiempoGUI;
-	Rect R = new Rect();
-	
-	public float TiempEspMuestraPts = 3;
-	
+	[Header("Extras")]
 	//posiciones de los camiones dependientes del lado que les toco en la pantalla
 	//la pos 0 es para la izquierda y la 1 para la derecha
 	public Vector3[]PosCamionesCarrera = new Vector3[2];
@@ -51,18 +56,7 @@ public class GameManager : MonoBehaviour
 	//la pista de carreras
 	public GameObject[] ObjsCarrera;
 	//de las descargas se encarga el controlador de descargas
-	
-	//para saber que el los ultimos 5 o 10 segs se cambie de tamaño la font del tiempo
-	//bool SeteadoNuevaFontSize = false;
-	//int TamOrigFont = 75;
-	//int TamNuevoFont = 75;
-	
-	/*
-	//para el testing
-	public float DistanciaRecorrida = 0;
-	public float TiempoTranscurrido = 0;
-	*/
-	
+
 	IList<int> users;
 	
 	//--------------------------------------------------------//
@@ -80,58 +74,25 @@ public class GameManager : MonoBehaviour
     void Start()
 	{
 		IniciarCalibracion();
-		
-		//para testing
-		//PosCamionesCarrera[0].x+=100;
-		//PosCamionesCarrera[1].x+=100;
 	}
 	
 	void Update()
-	{
-		//REINICIAR
-		if(Input.GetKey(KeyCode.Mouse1) &&
-		   Input.GetKey(KeyCode.Keypad0))
-		{
-			//Application.LoadLevel(Application.loadedLevel);
-			SceneManager.LoadScene(0);
-		}
-		
-		//CIERRA LA APLICACION
-		if(Input.GetKeyDown(KeyCode.Escape))
-		{
-			Application.Quit();
-		}
-		
-		
+	{		
 		switch (EstAct)
 		{
 		case EstadoJuego.Calibrando:
-			
-			//SKIP EL TUTORIAL
-			if(Input.GetKey(KeyCode.Mouse0) &&
-			   Input.GetKey(KeyCode.Keypad0))
-			{
-				if(PlayerInfo1 != null && PlayerInfo2 != null)
-				{
-					FinCalibracion(0);
-					FinCalibracion(1);
-					
-					FinTutorial(0);
-					FinTutorial(1);
-				}
-			}
 
-                if (PlayerInfo1.PJ == null && Input.GetKeyDown(KeyCode.W)) {
-                    PlayerInfo1 = new PlayerInfo(0, Player1);
-                    PlayerInfo1.LadoAct = Visualizacion.Lado.Izq;
-                    SetPosicion(PlayerInfo1);
-                }
+            if (PlayerInfo1.PJ == null && Input.GetKeyDown(KeyCode.W)) {
+                PlayerInfo1 = new PlayerInfo(0, Player1);
+                PlayerInfo1.LadoAct = Visualizacion.Lado.Izq;
+                SetPosicion(PlayerInfo1);
+            }
 
-                if (PlayerInfo2.PJ == null && Input.GetKeyDown(KeyCode.UpArrow)) {
-                    PlayerInfo2 = new PlayerInfo(1, Player2);
-                    PlayerInfo2.LadoAct = Visualizacion.Lado.Der;
-                    SetPosicion(PlayerInfo2);
-                }
+            if (PlayerInfo2.PJ == null && Input.GetKeyDown(KeyCode.UpArrow)) {
+                PlayerInfo2 = new PlayerInfo(1, Player2);
+                PlayerInfo2.LadoAct = Visualizacion.Lado.Der;
+                SetPosicion(PlayerInfo2);
+            }
 			
 			//cuando los 2 pj terminaron los tutoriales empiesa la carrera
 			if(PlayerInfo1.PJ != null && PlayerInfo2.PJ != null)
@@ -139,11 +100,10 @@ public class GameManager : MonoBehaviour
 				if(PlayerInfo1.FinTuto2 && PlayerInfo2.FinTuto2)
 				{
 					EmpezarCarrera();
+					//StartCoroutine(StarCountdown());
 				}
 			}
-			
-			break;
-			
+			break;			
 			
 		case EstadoJuego.Jugando:
 			
@@ -159,96 +119,64 @@ public class GameManager : MonoBehaviour
 				FinalizarCarrera();
 			}
 			
-			/*
-			//para testing
-			TiempoTranscurrido += T.GetDT();
-			DistanciaRecorrida += (Player1.transform.position - PosCamionesCarrera[0]).magnitude;
-			*/
-			
 			if(ConteoRedresivo)
 			{
-				//se asegura de que los vehiculos se queden inmobiles
-				//Player1.rigidbody.velocity = Vector3.zero;
-				//Player2.rigidbody.velocity = Vector3.zero;
-				
-				ConteoParaInicion -= Time.deltaTime;
-					if (ConteoParaInicion < 0)
-				{
-					EmpezarCarrera();
-					ConteoRedresivo = false;
-				}
+				//ConteoParaInicio -= Time.deltaTime;
+				//if (ConteoParaInicio < 0)
+				//{
+				//	EmpezarCarrera();
+				//	ConteoRedresivo = false;
+				//}
+				StartCoroutine(StarCountdown());
+				ConteoRedresivo = false;
+
 			}
 			else
 			{
 				//baja el tiempo del juego
 				TiempoDeJuego -= Time.deltaTime;
-					if (TiempoDeJuego <= 0)
+				if (TiempoDeJuego <= 0)
 				{
 					//termina el juego
 				}
-				/*
-				//otro tamaño
-				if(!SeteadoNuevaFontSize && TiempoDeJuego <= 5)
-				{
-					SeteadoNuevaFontSize = true;
-					GS_TiempoGUI.box.fontSize = TamNuevoFont;
-					GS_TiempoGUI.box.normal.textColor = Color.red;
-				}
-				*/
-			}
-			
+			}			
 			break;
 			
-			
-		case EstadoJuego.Finalizado:
-			
-			//nada de trakeo con kinect, solo se muestra el puntaje
-			//tambien se puede hacer alguna animacion, es el tiempo previo a la muestra de pts
-			
+		case EstadoJuego.Finalizado:			
 			TiempEspMuestraPts -= Time.deltaTime;
 			if(TiempEspMuestraPts <= 0)
-				//Application.LoadLevel(Application.loadedLevel +1); 
-				SceneManager.LoadScene(1);
-
-				break;		
+            {
+				SceneManager.LoadScene("PuntosFinal");
+            }
+			break;
 		}
 	}
 	
-	void OnGUI()
-	{
-		switch (EstAct)
-		{
-		case EstadoJuego.Jugando:
-			if(ConteoRedresivo)
+	IEnumerator StarCountdown()
+    {
+        while (ConteoParaInicio >= 0)
+        {
+			ConteoParaInicio -= Time.deltaTime;
+
+			if (ConteoParaInicio > 1)
 			{
-				GUI.skin = GS_ConteoInicio;
-				
-				R.x = ConteoPosEsc.x * Screen.width/100;
-				R.y = ConteoPosEsc.y * Screen.height/100;
-				R.width = ConteoPosEsc.width * Screen.width/100;
-				R.height = ConteoPosEsc.height * Screen.height/100;
-				
-				if(ConteoParaInicion > 1)
-				{
-					GUI.Box(R, ConteoParaInicion.ToString("0"));
-				}
-				else
-				{
-					GUI.Box(R, "GO");
-				}
+				conteoPj1Text.text = ConteoParaInicio.ToString("0");
+				conteoPj2Text.text = ConteoParaInicio.ToString("0");
 			}
-			
-			GUI.skin = GS_TiempoGUI;
-			R.x = TiempoGUI.x * Screen.width/100;
-			R.y = TiempoGUI.y * Screen.height/100;
-			R.width = TiempoGUI.width * Screen.width/100;
-			R.height = TiempoGUI.height * Screen.height/100;
-			GUI.Box(R,TiempoDeJuego.ToString("00"));
-			break;
-		}
-		
-		GUI.skin = null;
-	}
+			else
+			{
+				conteoPj1Text.text = "GO";
+				conteoPj2Text.text = "GO";
+			}
+
+			yield return null;
+        }
+
+		conteoPj1Text.enabled = false;
+		conteoPj2Text.enabled = false;
+
+		EmpezarCarrera();
+    }
 	
 	//----------------------------------------------------------//
 	
@@ -269,19 +197,6 @@ public class GameManager : MonoBehaviour
 		Player1.CambiarACalibracion();
 		Player2.CambiarACalibracion();
 	}
-		
-	/*
-	public void CambiarADescarga(Player pj)
-	{
-		//en la escena de la pista, activa la camara y las demas propiedades 
-		//de la escena de descarga
-	}
-	
-	public void CambiarAPista(Player pj)//de descarga ala pista de vuelta
-	{
-		//lo mismo pero al revez
-	}
-	*/	
 	
 	void CambiarATutorial()
 	{
@@ -365,22 +280,6 @@ public class GameManager : MonoBehaviour
 		Player1.ContrDesc.FinDelJuego();
 		Player2.ContrDesc.FinDelJuego();
 	}
-	
-	/*
-	public static ControladorDeDescarga GetContrDesc(int pjID)
-	{
-		switch (pjID)
-		{
-		case 1:
-			return ContrDesc1;
-			break;
-			
-		case 2:
-			return ContrDesc2;
-			break;
-		}
-		return null;
-	}*/
 	
 	//se encarga de posicionar la camara derecha para el jugador que esta a la derecha y viseversa
 	void SetPosicion(PlayerInfo pjInf)
@@ -509,10 +408,7 @@ public class GameManager : MonoBehaviour
 			if(PlayerInfo1.FinTuto1 && PlayerInfo2.FinTuto1)
 				CambiarACarrera();//CambiarATutorial();
 		
-	}
-	
-	
-	
+	}	
 	
 	[System.Serializable]
 	public class PlayerInfo
@@ -532,6 +428,5 @@ public class GameManager : MonoBehaviour
         public int TipoDeInput = -1;
 		
 		public Player PJ;
-	}
-	
+	}	
 }

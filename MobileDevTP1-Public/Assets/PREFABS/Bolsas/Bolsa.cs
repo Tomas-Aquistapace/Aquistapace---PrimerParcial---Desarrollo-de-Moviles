@@ -58,7 +58,7 @@ public class Bolsa : MonoBehaviour
 	
 	public void Desaparecer()
 	{
-		Particulas.GetComponent<ParticleSystem>().Play();
+		//Particulas.GetComponent<ParticleSystem>().Play();
 		Desapareciendo = true;
 		
 		GetComponent<Renderer>().enabled = false;
