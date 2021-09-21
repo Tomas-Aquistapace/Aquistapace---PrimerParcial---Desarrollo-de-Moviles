@@ -1,17 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PalletMover : ManejoPallets {
-
-    public MoveType miInput;
     public enum MoveType {
         WASD,
-        Arrows
+        Arrows,
+        Mobile
     }
+    public MoveType miInput;
 
     public ManejoPallets Desde, Hasta;
     bool segundoCompleto = false;
+
+    private void Awake()
+    {
+#if UNITY_ANDROID || UNITY_IOS
+        miInput = MoveType.Mobile;
+#endif
+    }
 
     private void Update() {
         switch (miInput) {
@@ -26,6 +31,7 @@ public class PalletMover : ManejoPallets {
                     TercerPaso();
                 }
                 break;
+
             case MoveType.Arrows:
                 if (!Tenencia() && Desde.Tenencia() && Input.GetKeyDown(KeyCode.LeftArrow)) {
                     PrimerPaso();
@@ -37,20 +43,21 @@ public class PalletMover : ManejoPallets {
                     TercerPaso();
                 }
                 break;
-            default:
+
+            case MoveType.Mobile:
                 break;
         }
     }
 
-    void PrimerPaso() {
+    public void PrimerPaso() {
         Desde.Dar(this);
         segundoCompleto = false;
     }
-    void SegundoPaso() {
+    public void SegundoPaso() {
         base.Pallets[0].transform.position = transform.position;
         segundoCompleto = true;
     }
-    void TercerPaso() {
+    public void TercerPaso() {
         Dar(Hasta);
         segundoCompleto = false;
     }
