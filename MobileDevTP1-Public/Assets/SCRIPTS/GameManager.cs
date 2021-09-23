@@ -32,10 +32,6 @@ public class GameManager : MonoBehaviour
 
 	bool ConteoRedresivo = true;
 
-	//[Header("Tiempo De Juego")]
-	//public Rect TiempoGUI = new Rect();
-	////public GUISkin GS_TiempoGUI;
-	//Rect R = new Rect();	
 	float TiempEspMuestraPts = 3;
 	
 	[Header("Extras")]
@@ -121,15 +117,8 @@ public class GameManager : MonoBehaviour
 			
 			if(ConteoRedresivo)
 			{
-				//ConteoParaInicio -= Time.deltaTime;
-				//if (ConteoParaInicio < 0)
-				//{
-				//	EmpezarCarrera();
-				//	ConteoRedresivo = false;
-				//}
 				StartCoroutine(StarCountdown());
 				ConteoRedresivo = false;
-
 			}
 			else
 			{
@@ -152,6 +141,20 @@ public class GameManager : MonoBehaviour
 		}
 	}
 	
+	public void StartPlayer1()
+    {
+		PlayerInfo1 = new PlayerInfo(0, Player1);
+		PlayerInfo1.LadoAct = Visualizacion.Lado.Izq;
+		SetPosicion(PlayerInfo1);
+	}
+	
+	public void StartPlayer2()
+    {
+		PlayerInfo2 = new PlayerInfo(1, Player2);
+		PlayerInfo2.LadoAct = Visualizacion.Lado.Der;
+		SetPosicion(PlayerInfo2);
+	}
+
 	IEnumerator StarCountdown()
     {
         while (ConteoParaInicio >= 0)

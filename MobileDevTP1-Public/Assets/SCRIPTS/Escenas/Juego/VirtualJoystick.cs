@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
@@ -25,7 +23,7 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
         stick.anchoredPosition = pos;
 
         float x = pos.x / limit;
-        float y = pos.y / limit;
+        //float y = pos.y / limit;
 
         SetHorizontal(x);
     }

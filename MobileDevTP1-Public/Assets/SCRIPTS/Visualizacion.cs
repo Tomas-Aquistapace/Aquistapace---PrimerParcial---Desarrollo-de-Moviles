@@ -25,7 +25,8 @@ public class Visualizacion : MonoBehaviour
 	public Camera CamDescarga;
 	
 	[Header("Canvas Jugador")]
-	public GameObject playerHUD;
+	public GameObject playerGameHUD;
+	public GameObject playerCalibracionHUD;
 
 	//EL DINERO QUE SE TIENE
 	[Header("Dinero")]
@@ -65,7 +66,9 @@ public class Visualizacion : MonoBehaviour
 
         if (this.gameObject.activeSelf)
         {
-			playerHUD.SetActive(true);
+			playerCalibracionHUD.SetActive(true);
+
+			playerGameHUD.SetActive(true);
 
 			descargaPanel.SetActive(false);
 		}
@@ -101,7 +104,8 @@ public class Visualizacion : MonoBehaviour
 		CamConduccion.enabled = false;
 		CamDescarga.enabled = false;
 
-		playerHUD.SetActive(false);
+		playerGameHUD.SetActive(false);
+		playerCalibracionHUD.SetActive(true);
 	}
 	
 	public void CambiarATutorial()
@@ -117,7 +121,8 @@ public class Visualizacion : MonoBehaviour
 		CamConduccion.enabled = true;
 		CamDescarga.enabled = false;
 
-		playerHUD.SetActive(true);
+		playerCalibracionHUD.SetActive(false);
+		playerGameHUD.SetActive(true);
 		descargaPanel.SetActive(false);
 	}
 	
@@ -127,7 +132,7 @@ public class Visualizacion : MonoBehaviour
 		CamConduccion.enabled = false;
 		CamDescarga.enabled = true;
 
-		playerHUD.SetActive(true);
+		playerGameHUD.SetActive(true);
 		descargaPanel.SetActive(true);
 	}
 	
