@@ -57,7 +57,6 @@ public class ContrCalibracion : MonoBehaviour
 				Tempo2 += Time.deltaTime;
 				if (Tempo2 > TiempEspCalib)
 				{
-					Debug.LogWarning("Se mete acá");
 					SetActivComp(true);
 				}
 			}

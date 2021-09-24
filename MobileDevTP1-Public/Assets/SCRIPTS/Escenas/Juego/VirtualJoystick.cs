@@ -23,7 +23,6 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
         stick.anchoredPosition = pos;
 
         float x = pos.x / limit;
-        //float y = pos.y / limit;
 
         SetHorizontal(x);
     }

@@ -20,7 +20,7 @@ public class ControlDireccion : MonoBehaviour
 	{
 		Giro = input.GetHorizontalAxis();
 
-        if (!Habilitado)
+		if (!Habilitado)
         {
 			return;
         }

@@ -79772,7 +79772,7 @@ PrefabInstance:
     - target: {fileID: 114475702172432364, guid: b81b1a58a0f14c9439cbdd014e695f71,
         type: 3}
       propertyPath: playerNumber
-      value: 
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114911345111112572, guid: b81b1a58a0f14c9439cbdd014e695f71,
         type: 3}
@@ -82705,7 +82705,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06bc485c653b0644084410461d65632b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: 
+  player: 1
   stick: {fileID: 1380127717}
   background: {fileID: 1443251475}
   limit: 10

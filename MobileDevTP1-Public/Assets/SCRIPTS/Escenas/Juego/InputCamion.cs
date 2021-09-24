@@ -78,7 +78,7 @@ public class CamionInputTouch : InputCamion
         SetPlayer(player);
     }
 
-    float horizontal;
+    float horizontal = 0f;
 
     public override bool GetButton(Buttons btn)
     {
@@ -107,6 +107,8 @@ public class CamionInputKeyTouch : InputCamion
     {
         camionInputKeys = new CamionInputKeys(player);
         camionInputTouch = new CamionInputTouch(player);
+
+        SetPlayer(player);
     }
 
     public override bool GetButton(Buttons btn)

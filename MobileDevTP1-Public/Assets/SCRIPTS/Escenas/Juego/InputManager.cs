@@ -27,7 +27,10 @@ public abstract class InputManager : MonoBehaviour
         var input = inputs.Find(inp => inp.Player == player);
 
         if (input == null)
+        {
             input = CreateInput(player);
+            inputs.Add(input);
+        }
 
         return input;
     }
