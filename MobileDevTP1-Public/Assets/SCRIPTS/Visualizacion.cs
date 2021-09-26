@@ -11,7 +11,7 @@ using TMPro;
 /// </summary>
 public class Visualizacion : MonoBehaviour 
 {
-	public enum Lado{Izq, Der}
+	public enum Lado{Izq, Der, Centro}
 	public Lado LadoAct;
 	
 	//ControlDireccion Direccion;
@@ -140,34 +140,34 @@ public class Visualizacion : MonoBehaviour
 	
 	public void SetLado(Lado lado)
 	{
-		LadoAct = lado;
-		
-		Rect r = new Rect();
-		r.width = CamConduccion.rect.width;
-		r.height = CamConduccion.rect.height;
-		r.y = CamConduccion.rect.y;
-		
-		switch (lado)
-		{
-		case Lado.Der:
-			r.x = 0.5f;
-			break;
-			
-			
-		case Lado.Izq:
-			r.x = 0;
-			break;
-		}
-		
-		CamCalibracion.rect = r;
-		CamConduccion.rect = r;
-		CamDescarga.rect = r;
+		//LadoAct = lado;
+		//
+		//Rect r = new Rect();
+		//r.width = CamConduccion.rect.width;
+		//r.height = CamConduccion.rect.height;
+		//r.y = CamConduccion.rect.y;
+		//
+		//switch (lado)
+		//{
+		//case Lado.Der:
+		//	r.x = 0.5f;
+		//	break;
+		//	
+		//	
+		//case Lado.Izq:
+		//	r.x = 0;
+		//	break;
+		//}
+		//
+		//CamCalibracion.rect = r;
+		//CamConduccion.rect = r;
+		//CamDescarga.rect = r;
 		
 		if(LadoAct == Visualizacion.Lado.Izq)
 		{
 			Techo.GetComponent<Renderer>().material.mainTexture = TextNum1;
 		}
-		else
+		else if(LadoAct == Visualizacion.Lado.Der)
 		{
 			Techo.GetComponent<Renderer>().material.mainTexture = TextNum2;
 		}

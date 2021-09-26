@@ -5,7 +5,7 @@ public class Estanteria : ManejoPallets
 {	
 	public Cinta CintaReceptora;//cinta que debe recibir la bolsa
 	public Pallet.Valores Valor;
-	PilaPalletMng Contenido;
+	public PilaPalletMng Contenido;
 	public bool Anim = false;
 	
 	
@@ -21,7 +21,7 @@ public class Estanteria : ManejoPallets
 	
 	void Start () 
 	{
-		Contenido = GetComponent<PilaPalletMng>();
+		//Contenido = GetComponent<PilaPalletMng>();
 		ColorOrigModel = ModelSuelo.GetComponent<Renderer>().material.color;
 	}
 	

@@ -15,12 +15,6 @@ public class PilaPalletMng : MonoBehaviour
 		}
 	}
 	
-	// Update is called once per frame
-	void Update () 
-	{
-	
-	}
-	
 	public void Sacar()
 	{
 		BolasasEnCamion[CantAct-1].GetComponent<Renderer>().enabled = false;

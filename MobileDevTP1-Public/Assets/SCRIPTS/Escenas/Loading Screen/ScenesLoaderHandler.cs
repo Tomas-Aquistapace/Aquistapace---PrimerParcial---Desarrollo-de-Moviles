@@ -56,6 +56,6 @@ public class ScenesLoaderHandler : MonoBehaviour
         float progress = Mathf.Clamp01(value / 0.9f);
         fillSlider.value = progress;
 
-        textProgres.text = progress * 100f + "%";
+        textProgres.text = (progress * 100f).ToString("0") + "%";
     }
 }
