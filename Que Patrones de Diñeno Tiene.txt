@@ -1,0 +1,3 @@
+Singleton  - InputManager, GameManager
+
+Factory - InputManager
