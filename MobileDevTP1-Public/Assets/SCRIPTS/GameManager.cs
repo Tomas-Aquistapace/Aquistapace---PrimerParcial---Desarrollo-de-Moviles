@@ -7,12 +7,14 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {	
 	public static GameManager Instancia;
-	
-	public float TiempoDeJuego = 60;
-	
+
 	public enum EstadoJuego{Calibrando, Jugando, Finalizado}
 	public EstadoJuego EstAct = EstadoJuego.Calibrando;
 	public enum NumOfPlayers { Singleplayer, Multiplayer }
+	
+	[Header("Timer")]
+	public float TiempoDeJuego = 60;
+	public TextMeshProUGUI timerText;
 
 	[Header("Jugadores")]
 	public NumOfPlayers numOfPlayers = NumOfPlayers.Multiplayer;
@@ -59,6 +61,8 @@ public class GameManager : MonoBehaviour
     void Start()
 	{
 		IniciarCalibracion();
+
+		timerText.text = TiempoDeJuego.ToString("0");
 	}
 	
 	void Update()
@@ -107,8 +111,10 @@ public class GameManager : MonoBehaviour
 			break;			
 			
 		case EstadoJuego.Jugando:
-			
-			if(TiempoDeJuego <= 0)
+
+			timerText.text = TiempoDeJuego.ToString("0");
+
+			if (TiempoDeJuego <= 0)
 			{
 				FinalizarCarrera();
 			}
@@ -126,7 +132,7 @@ public class GameManager : MonoBehaviour
 				{
 					//termina el juego
 				}
-			}			
+			}
 			break;
 			
 		case EstadoJuego.Finalizado:			

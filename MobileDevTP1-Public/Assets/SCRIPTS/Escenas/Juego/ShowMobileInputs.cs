@@ -19,6 +19,4 @@ public class ShowMobileInputs : MonoBehaviour
         }
 #endif
     }
-
-
 }
